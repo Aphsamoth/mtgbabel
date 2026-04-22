@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MTGBabel - Apps</title>
+
+  <style>
+    /* 全体の背景と基本設定 */
+    body {
+      margin: 0;
+      padding: 0;
+      background: #1d1d1e;
+      font-family: "Hiragino Sans", "Noto Sans JP", sans-serif;
+      color: #cfcece;
+      line-height: 1.6;
+      font-size: 17px;
+    }
+
+    /* ヘッダー */
+    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #424242;
+      padding: 12px 0;
+      backdrop-filter: blur(6px);
+    }
+
+    .site-header-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    .site-header-title {
+      margin: 0;
+      font-size: 22px;
+      font-weight: 600;
+    }
+
+    /* レイアウト全体 */
+    .layout {
+      display: flex;
+      justify-content: center;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 10px;
+    }
+
+    /* 左カラム（TOC） */
+    .toc {
+      width: 155px;
+      position: sticky;
+      top: 80px;
+      align-self: flex-start;
+      padding-right: 6px;
+    }
+
+    .toc h3 {
+      margin-top: 0;
+      font-size: 18px;
+      color: #555;
+    }
+
+    .toc ul {
+      list-style: none;
+      padding-left: 0;
+      margin: 0;
+    }
+
+    .toc li {
+      line-height: 1.8;
+    }
+
+    .toc a {
+      color: #cfcece;
+      text-decoration: none;
+      font-size: 15px;
+      line-height: 1.6;
+    }
+
+    .toc a:hover {
+      text-decoration: underline;
+    }
+
+    /* 中央コンテンツ */
+    .content {
+      max-width: 920px;
+      margin: 10px auto;
+      padding: 5px 5px;
+      background: #1d1d1e;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+      border-radius: 4px;
+    }
+
+    /* 見出し（シンプル・装飾なし） */
+    h2 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-top: 40px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ddd;
+      padding-bottom: 6px;
+      scroll-margin-top: 80px;
+    }
+
+    /* 段落（余白広め） */
+    p {
+      margin: 15px 0;
+    }
+
+    /* 画像（大きく・角丸なし） */
+    .content-image {
+      max-width: 65%;
+      display: block;
+      margin: 30px 0 10px;
+    }
+
+    /* キャプション（控えめ） */
+    .caption {
+      font-size: 14px;
+      color: #777;
+      margin-top: -5px;
+    }
+
+    /* コードセル */
+    .codecell {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      border-radius: 6px;
+      overflow: hidden;
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      font-size: 14px;
+      margin: 14px 0;
+    }
+
+    /* --- 上部タイトル --- */
+    .codecell-header {
+      padding: 3px 12px;
+      background: #252526;
+      border-bottom: 1px solid #333;
+      color: #c586c0;
+      font-size: 14px;
+      font-weight: 600;
+      user-select: none;
+    }
+
+    /* --- コード本体 --- */
+    .codecell-body {
+      margin: 0;
+      padding: 0.2px 0.3px;
+      overflow-x: auto;
+      white-space: pre;
+      color: #dcdcdc;
+    }
+
+    .codecell-body code {
+      display: block;
+      line-height: 1.45;
+    }
+
+    /* 削除行（-） */
+    .codecell-body code .diff-remove,
+    .codecell-body code span.diff-remove {
+      background: #313C36;
+      color: #00e0e0;
+    }
+
+    /* 追加行（+） */
+    .codecell-body code .diff-add,
+    .codecell-body code span.diff-add {
+      background: rgba(80, 200, 120, 0.18);
+      color: #8cffb0;
+    }
+
+    #copy-toast {
+      position: fixed;
+      background: #19191f;
+      color: #cfcece;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 14px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s ease;
+      z-index: 9999;
+    }
+
+    #copy-toast.show {
+      opacity: 1;
+    }
+
+    .copyable {
+      cursor: pointer;
+    }
+
+    /* フッター（最小限）*/
+    .site-footer {
+      padding: 4px 0;
+      background: #424242;
+      font-size: 14px;
+    }
+
+    .site-footer-inner {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 20px;
+      text-align: left;
+    }
+
+    /* スマホでは TOC を非表示 */
+    @media (max-width: 900px) {
+      .toc {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ヘッダ -->
+  <header class="site-header">
+    <div class="site-header-inner">
+      <div class="site-header-title">MTGBabel</div>
+  </header>
+
+  <div class="layout">
+
+    <!-- 左カラム：目次 -->
+    <nav class="toc">
+      <h3>目次</h3>
+      <ul>
+        <li><a href="#">Apps</a></li>
+        <li><a href="#sec1">🎨 MSE フォント変更</a></li>
+        <li><a href="#sec2">🧪 Scryfall カラム変更</a></li>
+      </ul>
+    </nav>
+
+    <!-- 中央コンテンツ -->
+    <main class="content">
+
+      <section>
+        <h2 id="sec1">🎨 MSE フォント変更</h2>
+        <p>
+          ・概要 <br />
+          著名オリカ作成アプリ Magic Set Editor の設定におけるフォントの変更手順について記す. <br />
+          以下 %MSE% は MSE をインストールしたパスである. <br />
+        </p>
+        <p>
+          ・フォントの追加 <br />
+          所望の OS に MSE で使用したいフォントを追加する. 既にインストール済みであればﾖｼ! <br />
+          MSE 用フォントとしてインストールするという場合は, %MSE% 下の下記ディレクトリに追加する. <br />
+          追加先パス：%MSE%\"Magic - Fonts" <br />
+          例として, MinionPro-Bold を以下で用いるためにインストールしたものとする. <br />
+        </p>
+        <p>
+          ・設定ファイル編集 <br />
+          例として, 旧枠スタイル (magic-old.mse-style) で用いられるフォントをロシア語フォントへ変更する. <br />
+          なお, 実際に刷られたロシア語版 Retro Frame カードの公式フォントは入手不可である (2026/04 現在). <br />
+          旧枠スタイル用の設定ファイル (style) を適当なテキストエディタで編集する. <br />
+          編集前のファイルは適宜 style.bakYYYYMMDD 等で退避しておく. <br />
+        <div class="codecell">
+          <div class="codecell-header">%MSE%\data\magic-old.mse-style/style:239</div>
+          <pre class="codecell-body"><code>
+  <span class="diff-remove">-      name: MagicMedieval</span>
+  <span class="diff-remove">-      size: 15.5</span>
+  <span class="diff-add">+      name: MinionPro-Bold</span>
+  <span class="diff-add">+      size: 13</span>
+    </code></pre>
+        </div>
+        <div class="codecell">
+          <div class="codecell-header">%MSE%\data\magic-old.mse-style/style:284</div>
+          <pre class="codecell-body"><code>
+  <span class="diff-remove">-      name: MPlantin</span>
+  <span class="diff-add">+      name: MinionPro-Bold</span>
+    </code></pre>
+        </div>
+        <div class="codecell">
+          <div class="codecell-header">%MSE%\data\magic-old.mse-style/style:335</div>
+          <pre class="codecell-body"><code>
+  <span class="diff-remove">-      name: MPlantin</span>
+  <span class="diff-remove">-      scale down to: 6</span>
+  <span class="diff-add">+      name: Times New Roman</span>
+  <span class="diff-add">+      scale down to: 10.1</span>
+    </code></pre>
+        </div>
+        </p>
+        <p>
+          ・アプリケーション再起動 <br />
+          設定ファイルの編集が完了したら, ファイルを保存し, mse.exe を再起動する. <br />
+          見栄えを確認し, フォントやフォントサイズを適宜調整する. <br />
+        </p>
+        <p>
+          ・設定戻し <br />
+          所望のオリカ作成が完了したら, 画像をエクスポートする. ﾖｼ! <br />
+          設定ファイル (style) の編集箇所を元に戻す (退避した style.bakYYYYMMDD からリネームする等). <br />
+        </p>
+        <img src="Мёдзин_Мрачного_Предательства.png" class="content-image">
+        <p class="caption">作成した旧枠ロシア語カード画像の例. フォントが完全ではないため完成度は十分でない. </p>
+        </p>
+      </section>
+
+      <section>
+        <h2 id="sec2">🧪 Scryfall カラム変更</h2>
+        <p>
+          ・概要 <br />
+          著名カード検索アプリ Scryfall の検索結果で表示されるカラム数を変更する手順について記す. <br />
+        </p>
+        <p>
+          ・一行あたりに表示されるカードの枚数を変更する <br />
+          [要素を検証] (F12) > [Sources] > Ctrl + F > "card-grid-item" より以下の項目を変更. 適宜調整. <br />
+        <div class="codecell">
+          <div class="codecell-header">scryfall-3e21fe7179294691877b9883246cd6d8b847812cdbbcced28f093c1009390be0.css</div>
+          <pre class="codecell-body"><code>
+      @media screen and (min-width: 920px) {
+        .card-grid-item {
+  <span class="diff-remove">-       width:24.5%</span>
+  <span class="diff-add">+       width:6.5%</span>
+        }
+      } 
+      </code></pre>
+        </div>
+        </p>
+        <p>
+          ・カード枚数アイコンのサイズを変更する <br />
+          この変更は Scryfall のカード検索結果ではなく, Your Decks の Visual View で実施することを想定している. <br />
+          上記の変更でカード画像サイズが小さくなると, カード枚数アイコンがカード画像サイズに合わなくなる場合がある. <br />
+          [要素を検証] (F12) > [Sources] > Ctrl + F > "card-grid-item-count" より以下の項目を変更. 適宜調整. <br />
+        <div class="codecell">
+          <div class="codecell-header">scryfall-3e21fe7179294691877b9883246cd6d8b847812cdbbcced28f093c1009390be0.css</div>
+          <pre class="codecell-body"><code>
+      .card-grid-item-count {
+        position: absolute;
+  ...
+        z-index: 5000;
+  <span class="diff-remove">-     top: 13.5%;</span>
+  <span class="diff-remove">-     left: 11%;</span>
+  <span class="diff-remove">-     padding: 0 5px 0 7px;</span>
+  <span class="diff-remove">-     height: 22px;</span>
+  <span class="diff-add">+     top: 6.5%;</span>
+  <span class="diff-add">+     left: 10%;</span>
+  <span class="diff-add">+     padding: 0 3px 0 7px;</span>
+  <span class="diff-add">+     height: 13px;</span>
+      </code></pre>
+        </div>
+        </p>
+        <img src="GjwYYRNacAExevG.jpg" class="content-image">
+        <p class="caption">各変更箇所. </p>
+        </p>
+      </section>
+    </main>
+
+  </div>
+
+  <footer class="site-footer">
+    <div class="site-footer-inner">
+      <p> Written by <a href="https://x.com/Aphsamoth">@Aphsamoth </a></p>
+    </div>
+  </footer>
+
+  <div id="copy-toast">Copied!</div>
+
+</body>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const sections = document.querySelectorAll("main section[id]");
+    const tocLinks = document.querySelectorAll(".toc a");
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          const id = entry.target.getAttribute("id");
+
+          tocLinks.forEach(link => {
+            link.classList.toggle("active", link.getAttribute("href") === `#${id}`);
+          });
+        }
+      });
+    }, {
+      rootMargin: "-40% 0px -50% 0px", // 画面中央付近で反応
+      threshold: 0
+    });
+
+    sections.forEach(section => observer.observe(section));
+  });
+
+  function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+      showCopyToast();
+    });
+  }
+
+  function showCopyToast(x, y) {
+    const toast = document.getElementById("copy-toast");
+
+    // クリック位置の右上に配置
+    toast.style.left = (x + 19) + "px";
+    toast.style.top = (y - 19) + "px";
+
+    toast.classList.add("show");
+
+    setTimeout(() => {
+      toast.classList.remove("show");
+    }, 1000);
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const tables = document.querySelectorAll("table");
+
+    tables.forEach(table => {
+      const ths = table.querySelectorAll("th");
+
+      ths.forEach((th, colIndex) => {
+        if (th.classList.contains("copy-col")) {
+          const tds = table.querySelectorAll(`tbody tr td:nth-child(${colIndex + 1})`);
+          tds.forEach(td => {
+            td.classList.add("copyable");
+            td.addEventListener("click", (e) => {
+              copyToClipboard(td.innerText.trim());
+              showCopyToast(e.clientX, e.clientY);
+            });
+          });
+        }
+      });
+    });
+  });
+
+</script>
+
+</html>
