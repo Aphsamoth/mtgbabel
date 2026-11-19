@@ -210,6 +210,11 @@
       text-align: left;
     }
 
+    .footer-legal {
+      color: #cfcece91;
+      line-height: 1.33;
+    }
+
     /* スマホでは TOC を非表示 */
     @media (max-width: 900px) {
       .toc {
@@ -217,9 +222,9 @@
       }
     }
   </style>
-  
+
   <!-- Twitter Embed Dark Theme -->
-  <meta name="twitter:widgets:theme" content="dark"/>
+  <meta name="twitter:widgets:theme" content="dark" />
 
 </head>
 
@@ -237,9 +242,8 @@
     <nav class="toc">
       <h3>目次</h3>
       <ul>
-        <li><a href="#">Apps</a></li>
-        <li><a href="#sec1">🎨 MSE フォント変更</a></li>
-        <li><a href="#sec2">🧪 Scryfall カラム変更</a></li>
+        <li><a href="mtgbabel_apps.html#sec1">MSE フォント変更</a></li>
+        <li><a href="mtgbabel_apps.html#sec2">Scryfall カラム変更</a></li>
       </ul>
     </nav>
 
@@ -302,7 +306,13 @@
           所望のオリカ作成が完了したら, 画像をエクスポートする. ﾖｼ! <br />
           設定ファイル (style) の編集箇所を元に戻す (退避した style.bakYYYYMMDD をリネームする等). <br />
         </p>
-        <blockquote data-theme="dark" class="twitter-tweet"><p lang="ja" dir="ltr">ぐぬぬ... MSE で露語フォント対応をしてみた結果. フォント設定はうまくできたのだけど, やはり代替フォントでは満足ならぬ. 特にテキスト部分は良いのがなくて Times New Roman にしたけど公式フォントに大きく劣る. そのうち AI でフォントも生成できるようになると期待..🐍 <a href="https://t.co/0y3tZjT2HW">pic.twitter.com/0y3tZjT2HW</a></p>&mdash; Aphsamoth 🐍 (@Aphsamoth) <a href="https://twitter.com/Aphsamoth/status/2034652573190516759?ref_src=twsrc%5Etfw">March 19, 2026</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <blockquote data-theme="dark" class="twitter-tweet">
+          <p lang="ja" dir="ltr">ぐぬぬ... MSE で露語フォント対応をしてみた結果. フォント設定はうまくできたのだけど, やはり代替フォントでは満足ならぬ. 特にテキスト部分は良いのがなくて
+            Times New Roman にしたけど公式フォントに大きく劣る. そのうち AI でフォントも生成できるようになると期待..🐍 <a
+              href="https://t.co/0y3tZjT2HW">pic.twitter.com/0y3tZjT2HW</a></p>&mdash; Aphsamoth 🐍 (@Aphsamoth) <a
+            href="https://twitter.com/Aphsamoth/status/2034652573190516759?ref_src=twsrc%5Etfw">March 19, 2026</a>
+        </blockquote>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
       </section>
 
       <section>
@@ -315,7 +325,8 @@
           ・一行あたりに表示されるカードの枚数を変更する <br />
           [要素を検証] (F12) > [Sources] > Ctrl + F > "card-grid-item" より以下の項目を変更. 適宜調整. <br />
         <div class="codecell">
-          <div class="codecell-header">scryfall-3e21fe7179294691877b9883246cd6d8b847812cdbbcced28f093c1009390be0.css</div>
+          <div class="codecell-header">scryfall-3e21fe7179294691877b9883246cd6d8b847812cdbbcced28f093c1009390be0.css
+          </div>
           <pre class="codecell-body"><code>
       @media screen and (min-width: 920px) {
         .card-grid-item {
@@ -332,7 +343,8 @@
           上記の変更でカード画像サイズが小さくなると, カード枚数アイコンがカード画像サイズに合わなくなる場合がある. <br />
           [要素を検証] (F12) > [Sources] > Ctrl + F > "card-grid-item-count" より以下の項目を変更. 適宜調整. <br />
         <div class="codecell">
-          <div class="codecell-header">scryfall-3e21fe7179294691877b9883246cd6d8b847812cdbbcced28f093c1009390be0.css</div>
+          <div class="codecell-header">scryfall-3e21fe7179294691877b9883246cd6d8b847812cdbbcced28f093c1009390be0.css
+          </div>
           <pre class="codecell-body"><code>
       .card-grid-item-count {
         position: absolute;
@@ -349,7 +361,14 @@
       </code></pre>
         </div>
         </p>
-        <blockquote data-theme="dark" class="twitter-tweet"><p lang="ja" dir="ltr">Scryfall 画像カードリストのスタイル変更方法 🥸 <br>デフォルトで card-grid-item { width:24.5% } の箇所を減らすと一行に表示されるカードの枚数が増える 🐡 表示されるカードの枚数が増えて左上の枚数表示のアイコン (card-grid-item-count) が相対的に大きくなりすぎる場合はそれも変更する 🐍 <a href="https://t.co/Kvedjhj9L3">pic.twitter.com/Kvedjhj9L3</a></p>&mdash; Aphsamoth 🐍 (@Aphsamoth) <a href="https://twitter.com/Aphsamoth/status/1890418465648918783?ref_src=twsrc%5Etfw">February 14, 2025</a></blockquote> <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+        <blockquote data-theme="dark" class="twitter-tweet">
+          <p lang="ja" dir="ltr">Scryfall 画像カードリストのスタイル変更方法 🥸 <br>デフォルトで card-grid-item { width:24.5% }
+            の箇所を減らすと一行に表示されるカードの枚数が増える 🐡 表示されるカードの枚数が増えて左上の枚数表示のアイコン (card-grid-item-count) が相対的に大きくなりすぎる場合はそれも変更する 🐍
+            <a href="https://t.co/Kvedjhj9L3">pic.twitter.com/Kvedjhj9L3</a>
+          </p>&mdash; Aphsamoth 🐍 (@Aphsamoth) <a
+            href="https://twitter.com/Aphsamoth/status/1890418465648918783?ref_src=twsrc%5Etfw">February 14, 2025</a>
+        </blockquote>
+        <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
       </section>
     </main>
 
@@ -357,7 +376,19 @@
 
   <footer class="site-footer">
     <div class="site-footer-inner">
-      <p> Written by <a href="https://x.com/Aphsamoth">@Aphsamoth </a></p>
+      <p><a href="https://x.com/Aphsamoth">@Aphsamoth </a>
+        <br />
+        臨 兵 闘 者 皆 陣 烈 在 前
+      </p>
+      <p>
+      <div class="footer-legal">
+        Portions of MTGBabel are unofficial Fan Content permitted under the Wizards of the Coast Fan Content Policy. The
+        literal and graphical information presented on this site about Magic: The Gathering, including card images and
+        mana symbols, is copyright Wizards of the Coast, LLC.
+        MTGBabel is not produced by or endorsed by Wizards of the Coast.
+        All other content © 2026 MTGBabel.
+      </div>
+      </p>
     </div>
   </footer>
 
